@@ -141,7 +141,7 @@
     \def\gt{>}
     \def\lt{<}
     % Document parameters
-    \title{CSTLEngin\_HW1\_Ques2}
+    \title{CSTLEngin\_HW3}
     
     
     
@@ -280,718 +280,444 @@
     
 
     
-    \hypertarget{load-packages}{%
-\section{Load Packages}\label{load-packages}}
+    Coastal Engineering - Homework 1
+
+    Honor Code Pledge: ``I have neither given nor received unauthorized
+assistance on this assignment.''
+
+Signature:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
-        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
-        \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
-        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
-        \PY{k+kn}{import} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{integrate} \PY{k}{as} \PY{n+nn}{integrate}
-\end{Verbatim}
-
-
-    \hypertarget{load-and-clean-dataframe}{%
-\section{Load and Clean Dataframe}\label{load-and-clean-dataframe}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}table}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GrainSizeDistribution.dat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{s+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{distribution}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{(source}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{US}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Army}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
-               \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Corps}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{of}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Engineers)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-        \PY{n}{data}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-        \PY{n}{data}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Sediment}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{GrainSize\PYZus{}mm}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grain}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Percent}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{size}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CumulativePercCoarser}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-        \PY{n}{data} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{astype}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{float}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CumulativePercFiner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{100} \PY{o}{\PYZhy{}} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CumulativePercCoarser}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-\end{Verbatim}
-
-
-    \hypertarget{question-a}{%
-\section{--------- Question a ---------}\label{question-a}}
-
-    \hypertarget{given-grain-size-mm}{%
-\subsubsection{\texorpdfstring{{\textbf{GIVEN:}} grain size
-(mm)}{GIVEN: grain size (mm)}}\label{given-grain-size-mm}}
-
-\hypertarget{find-mean-and-median-diameter}{%
-\subsubsection{\texorpdfstring{{\textbf{FIND:}} mean and median
-diameter}{FIND: mean and median diameter}}\label{find-mean-and-median-diameter}}
-
-\hypertarget{principles}{%
-\subsubsection{\texorpdfstring{{\textbf{PRINCIPLES:}}}{PRINCIPLES:}}\label{principles}}
-
-\hypertarget{krumbien-1936-phi-scale}{%
-\subsubsection{Krumbien (1936) Phi
-Scale:}\label{krumbien-1936-phi-scale}}
-
-\hypertarget{phi--log_2-d}{%
-\subsubsection{\texorpdfstring{\(\phi = -\log_2 d\)}{\textbackslash{}phi = -\textbackslash{}log\_2 d}}\label{phi--log_2-d}}
-
-\hypertarget{otto-1939-and-inman-1952}{%
-\subsubsection{Otto (1939 and Inman
-(1952):}\label{otto-1939-and-inman-1952}}
-
-\hypertarget{m_dphi-fracphi_84-phi_162}{%
-\subsubsection{\texorpdfstring{\(M_{d\phi} = \frac{(\phi_{84} + \phi_{16})}2\)}{M\_\{d\textbackslash{}phi\} = \textbackslash{}frac\{(\textbackslash{}phi\_\{84\} + \textbackslash{}phi\_\{16\})\}2}}\label{m_dphi-fracphi_84-phi_162}}
-
-\hypertarget{d_mean-2-m_dphi}{%
-\subsubsection{\texorpdfstring{\(d_{mean} = {2}^{-M_{d\phi}}\)}{d\_\{mean\} = \{2\}\^{}\{-M\_\{d\textbackslash{}phi\}\}}}\label{d_mean-2-m_dphi}}
-
-\hypertarget{sorting}{%
-\subsubsection{Sorting:}\label{sorting}}
-
-\hypertarget{sigma_phi-fracphi_84---phi_162}{%
-\subsubsection{\texorpdfstring{\(\sigma_{\phi} = \frac{(\phi_{84} - \phi_{16})}2\)}{\textbackslash{}sigma\_\{\textbackslash{}phi\} = \textbackslash{}frac\{(\textbackslash{}phi\_\{84\} - \textbackslash{}phi\_\{16\})\}2}}\label{sigma_phi-fracphi_84---phi_162}}
-
-    \hypertarget{solution}{%
-\subsubsection{\texorpdfstring{{\textbf{SOLUTION:}}}{SOLUTION:}}\label{solution}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}11}]:} \PY{c+c1}{\PYZsh{} Add phi scale column}
-         \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{phi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{log2}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{GrainSize\PYZus{}mm}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{data}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}13}]:}    GrainSize\_mm  Percent  CumulativePercCoarser  CumulativePercFiner       phi
-         4         4.000     0.00                   0.00               100.00 -2.000000
-         5         3.364     0.26                   0.26                99.74 -1.750178
-         6         2.828     0.16                   0.42                99.58 -1.499782
-         7         2.378     0.17                   0.59                99.41 -1.249749
-         8         2.000     0.22                   0.81                99.19 -1.000000
-\end{Verbatim}
-            
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}14}]:} \PY{c+c1}{\PYZsh{}Find percentiles}
+{\color{incolor}In [{\color{incolor}94}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{import} \PY{n+nn}{math}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
          
-         \PY{c+c1}{\PYZsh{} Use Cumulative Percent Coarser and interpolate}
-         \PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{83.43}\PY{p}{,} \PY{l+m+mf}{93.35}\PY{p}{]}
-         \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{2.498179}\PY{p}{,} \PY{l+m+mf}{2.746616}\PY{p}{]}
-         
-         \PY{n}{phi\PYZus{}84} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{l+m+mi}{84}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}
-         
-         \PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{15.71}\PY{p}{,} \PY{l+m+mf}{20.16}\PY{p}{]}
-         \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{1.000000}\PY{p}{,} \PY{l+m+mf}{1.251539}\PY{p}{]}
-         
-         
-         \PY{n}{phi\PYZus{}16} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}
+         \PY{n}{g} \PY{o}{=} \PY{l+m+mf}{9.81} \PY{c+c1}{\PYZsh{} m/s\PYZca{}2}
+         \PY{n}{pi} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{pi}
+\end{Verbatim}
+
+
+    Problem 1
+
+    Given: wave heights (m)
+
+Find: Calculate Hmax, H1/10, H1/3, Hmean, and Hrms; estimate with the
+Rayleigh probaiblity distribtion H1/10, Hmean, and Hrms. Find Error.
+
+Principles:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}95}]:} \PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}table}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HwavestatsF18.dat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{s+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wv\PYZus{}ht\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}15}]:} \PY{c+c1}{\PYZsh{}Calculate d\PYZus{}mean:}
-         \PY{n}{M\PYZus{}dphi} \PY{o}{=} \PY{p}{(}\PY{n}{phi\PYZus{}84} \PY{o}{+} \PY{n}{phi\PYZus{}16}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
-         \PY{n}{d\PYZus{}mean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{power}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{M\PYZus{}dphi}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}96}]:} \PY{k}{def} \PY{n+nf}{statistics}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{column\PYZus{}name}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{:}
+             \PY{n}{data}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{column\PYZus{}name}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} 
+             \PY{c+c1}{\PYZsh{} sort values largest to smallest}
+             
+             \PY{n}{H\PYZus{}max} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{column\PYZus{}name}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+             \PY{n}{H\PYZus{}mean} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{column\PYZus{}name}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+                        
+             \PY{n}{count\PYZus{}row} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+             \PY{n}{count\PYZus{}row}
+             \PY{n}{count\PYZus{}third} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{count\PYZus{}row} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} 
+             \PY{c+c1}{\PYZsh{}Python indexing starts at 0, so must substract 1 from the count}
+             \PY{n}{count\PYZus{}tenth} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{count\PYZus{}row} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} 
+             \PY{c+c1}{\PYZsh{}Python indexing starts at 0, so must substract 1 from the count}
+                        
+             \PY{n}{H\PYZus{}third} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n}{count\PYZus{}third}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{)}
+             \PY{n}{H\PYZus{}tenth} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n}{count\PYZus{}tenth}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{)}
+             
+             \PY{n}{H\PYZus{}rms} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wv\PYZus{}ht\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+             
+             \PY{k}{return} \PY{n}{H\PYZus{}max}\PY{p}{,} \PY{n}{H\PYZus{}mean}\PY{p}{,} \PY{n}{H\PYZus{}third}\PY{p}{,} \PY{n}{H\PYZus{}tenth}\PY{p}{,} \PY{n}{H\PYZus{}rms}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}16}]:} \PY{n}{d\PYZus{}mean}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}16}]:} 0.29434432760858464
-\end{Verbatim}
-            
-    \hypertarget{mean-grain-size-is-0.29-mm}{%
-\subsubsection{Mean grain size is 0.29
-mm}\label{mean-grain-size-is-0.29-mm}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}17}]:} \PY{c+c1}{\PYZsh{} Calculate d\PYZus{}median:}
-         \PY{c+c1}{\PYZsh{} phi\PYZus{}50 = np.percentile(data.phi, 50)}
-         \PY{c+c1}{\PYZsh{} d\PYZus{}median = np.power(2, (\PYZhy{}phi\PYZus{}50))}
-         
-         \PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{36.69}\PY{p}{,} \PY{l+m+mf}{54.10}\PY{p}{]}
-         \PY{n}{y} \PY{o}{=} \PY{p}{[}\PY{l+m+mf}{1.751465}\PY{p}{,} \PY{l+m+mf}{2.000000}\PY{p}{]}
-         
-         \PY{n}{phi\PYZus{}50} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{interp}\PY{p}{(}\PY{l+m+mi}{50}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{y}\PY{p}{)}
-         \PY{n}{d\PYZus{}median} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{power}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{phi\PYZus{}50}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}97}]:} \PY{n}{H\PYZus{}max}\PY{p}{,} \PY{n}{H\PYZus{}mean}\PY{p}{,} \PY{n}{H\PYZus{}third}\PY{p}{,} \PY{n}{H\PYZus{}tenth}\PY{p}{,} \PY{n}{H\PYZus{}rms} \PY{o}{=} \PY{n}{statistics}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wv\PYZus{}ht\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}max is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}max}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}1/10 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}tenth}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}1/3 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}mean is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}mean}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}rms is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}rms}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}18}]:} \PY{n}{d\PYZus{}median}
-\end{Verbatim}
+H\_max is 12.42 m
+H\_1/10 is 4.54 m
+H\_1/3 is 3.47 m
+H\_mean is 1.97 m
+H\_rms is 2.37 m
 
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}18}]:} 0.26035088344971896
-\end{Verbatim}
-            
-    \hypertarget{median-grain-size-is-0.26-mm}{%
-\subsubsection{Median grain size is 0.26
-mm}\label{median-grain-size-is-0.26-mm}}
+    \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}19}]:} \PY{c+c1}{\PYZsh{} Calculate sorting (standard deviation):}
-         \PY{n}{std\PYZus{}phi} \PY{o}{=} \PY{p}{(}\PY{n}{phi\PYZus{}84} \PY{o}{\PYZhy{}} \PY{n}{phi\PYZus{}16}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}20}]:} \PY{n}{std\PYZus{}phi}
-         \PY{c+c1}{\PYZsh{} std\PYZus{}phi \PYZgt{}= 1, BETWEEN WELL AND POORLY SORTED}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}20}]:} 0.7480308403327744
-\end{Verbatim}
-            
-    \hypertarget{because-the-standard-deviation-phi-units-is-0.75-it-is-between-well-and-poorly-sorted}{%
-\subsubsection{Because the standard deviation (phi units) is 0.75, it is
-between well and poorly
-sorted}\label{because-the-standard-deviation-phi-units-is-0.75-it-is-between-well-and-poorly-sorted}}
-
-    \hypertarget{question-b}{%
-\section{------ --- Question b ---------}\label{question-b}}
-
-    \hypertarget{given-grain-size-mm-std_phi-standard-deviation-in-phi-units-0.75-m_dphi-mean-in-phi-units-1.76}{%
-\subsubsection{\texorpdfstring{{\textbf{GIVEN:}} grain size (mm),
-std\_phi (standard deviation in phi units) = 0.75, M\_dphi (mean in phi
-units) =
-1.76}{GIVEN: grain size (mm), std\_phi (standard deviation in phi units) = 0.75, M\_dphi (mean in phi units) = 1.76}}\label{given-grain-size-mm-std_phi-standard-deviation-in-phi-units-0.75-m_dphi-mean-in-phi-units-1.76}}
-
-\hypertarget{find-plot-grain-size-in-mm-distribution-together-with-the-log-normal-cumulative-distribution-function-cdf}{%
-\subsubsection{\texorpdfstring{{\textbf{FIND:}} Plot grain size (in mm)
-distribution together with the log-normal cumulative distribution
-function
-(CDF)}{FIND: Plot grain size (in mm) distribution together with the log-normal cumulative distribution function (CDF)}}\label{find-plot-grain-size-in-mm-distribution-together-with-the-log-normal-cumulative-distribution-function-cdf}}
-
-\hypertarget{principles}{%
-\subsubsection{\texorpdfstring{{\textbf{PRINCIPLES:}}}{PRINCIPLES:}}\label{principles}}
-
-\hypertarget{equation-2.2-log-normal-probability-density-function}{%
-\subsubsection{Equation 2.2 log-normal probability density
-function:}\label{equation-2.2-log-normal-probability-density-function}}
-
-\hypertarget{fphi-frac1sigma_phi-sqrt2pie-fracphi-mu_phi22sigma_phi2}{%
-\subsubsection{\texorpdfstring{\(f(\phi) = \frac{1}{\sigma_\phi \sqrt{2\pi}}e^-{\frac{{(\phi-\mu_\phi)}^2}{2\sigma_\phi^2}}\)}{f(\textbackslash{}phi) = \textbackslash{}frac\{1\}\{\textbackslash{}sigma\_\textbackslash{}phi \textbackslash{}sqrt\{2\textbackslash{}pi\}\}e\^{}-\{\textbackslash{}frac\{\{(\textbackslash{}phi-\textbackslash{}mu\_\textbackslash{}phi)\}\^{}2\}\{2\textbackslash{}sigma\_\textbackslash{}phi\^{}2\}\}}}\label{fphi-frac1sigma_phi-sqrt2pie-fracphi-mu_phi22sigma_phi2}}
-
-\hypertarget{equation-2.3-cdf}{%
-\subsubsection{Equation 2.3 CDF:}\label{equation-2.3-cdf}}
-
-\hypertarget{pphi-phi_g-int_-inftyphi_g-fphidphi}{%
-\subsubsection{\texorpdfstring{\(P[\phi < \phi_g] = \int_{-\infty}^{\phi_g} f(\phi)d\phi\)}{P{[}\textbackslash{}phi \textless{} \textbackslash{}phi\_g{]} = \textbackslash{}int\_\{-\textbackslash{}infty\}\^{}\{\textbackslash{}phi\_g\} f(\textbackslash{}phi)d\textbackslash{}phi}}\label{pphi-phi_g-int_-inftyphi_g-fphidphi}}
-
-    \hypertarget{solution-calc-cdf-and-plot}{%
-\subsubsection{\texorpdfstring{{\textbf{SOLUTION (CALC CDF AND
-PLOT):}}}{SOLUTION (CALC CDF AND PLOT):}}\label{solution-calc-cdf-and-plot}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}21}]:} \PY{n}{g} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{phi}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-         
-         \PY{c+c1}{\PYZsh{} PDF }
-         \PY{n}{y} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{p}{(}\PY{n}{std\PYZus{}phi}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{np}\PY{o}{.}\PY{n}{pi}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{e}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{g} \PY{o}{\PYZhy{}} \PY{n}{M\PYZus{}dphi}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{p}{(}\PY{n}{std\PYZus{}phi}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-         
-         \PY{c+c1}{\PYZsh{} CDF}
-         \PY{n}{y\PYZus{}int} \PY{o}{=} \PY{n}{integrate}\PY{o}{.}\PY{n}{cumtrapz}\PY{p}{(}\PY{n}{y}\PY{p}{,} \PY{n}{initial} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}98}]:} \PY{k}{def} \PY{n+nf}{Rayleigh\PYZus{}estimate}\PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{:}
+             \PY{n}{est\PYZus{}H\PYZus{}tenth} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.27} \PY{o}{*} \PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+             \PY{n}{est\PYZus{}H\PYZus{}mean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.27} \PY{o}{*} \PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{2.03}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+             \PY{n}{est\PYZus{}H\PYZus{}rms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.27} \PY{o}{*} \PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{1.80}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+             
+             \PY{k}{return} \PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}rms}  
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}23}]:} \PY{c+c1}{\PYZsh{} convert from phi to mm }
-         \PY{n}{y\PYZus{}int\PYZus{}mm} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{power}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{y\PYZus{}int}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}99}]:} \PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}rms} \PY{o}{=} \PY{n}{Rayleigh\PYZus{}estimate}\PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}96}]:} \PY{n}{x} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GrainSize\PYZus{}mm}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-         
-         \PY{n}{y1} \PY{o}{=} \PY{n}{y\PYZus{}int\PYZus{}mm} \PY{o}{*} \PY{l+m+mi}{100}
-         \PY{n}{y2} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CumulativePercFiner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-         
-         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y1}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CDF}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y2}\PY{p}{,} \PY{n}{label} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Grain Size Distribution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         
-         \PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{gca}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{invert\PYZus{}xaxis}\PY{p}{(}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Log Grain Size (mm)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Percent Finer Than}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Grain size (mm) distribution together with the }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ log\PYZhy{}normal cumulative distribution function (CDF)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{14}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}100}]:} \PY{k}{def} \PY{n+nf}{Errors}\PY{p}{(}\PY{n}{true}\PY{p}{,} \PY{n}{estimate}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{:}
+              \PY{n}{error} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{true} \PY{o}{\PYZhy{}} \PY{n}{estimate}\PY{p}{)}\PY{o}{/}\PY{n}{true} \PY{o}{*} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
+              
+              \PY{k}{return} \PY{n}{error}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}96}]:} Text(0.5, 1.0, 'Grain size (mm) distribution together with the \textbackslash{}n log-normal cumulative distribution function (CDF)')
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}101}]:} \PY{n}{error\PYZus{}H\PYZus{}tenth} \PY{o}{=} \PY{n}{Errors}\PY{p}{(}\PY{n}{H\PYZus{}tenth}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{error\PYZus{}H\PYZus{}mean} \PY{o}{=} \PY{n}{Errors}\PY{p}{(}\PY{n}{H\PYZus{}mean}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{error\PYZus{}H\PYZus{}rms} \PY{o}{=} \PY{n}{Errors}\PY{p}{(}\PY{n}{H\PYZus{}rms}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}rms}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
 \end{Verbatim}
-            
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}102}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}1/10 estimated from Rayleigh probability distribution is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with an error of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{n}{error\PYZus{}H\PYZus{}tenth}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}mean estimated from Rayleigh probability distribution is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with an error of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{n}{error\PYZus{}H\PYZus{}mean}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}rms estimated from Rayleigh probability distribution is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with an error of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{est\PYZus{}H\PYZus{}rms}\PY{p}{,} \PY{n}{error\PYZus{}H\PYZus{}rms}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+H\_1/10 estimated from Rayleigh probability distribution is 4.41 m 
+ with an error of 2.86\%
+H\_mean estimated from Rayleigh probability distribution is 2.17 m 
+ with an error of 10.15\%
+H\_rms estimated from Rayleigh probability distribution is 2.45 m 
+ with an error of 3.38\%
+
+    \end{Verbatim}
+
+    Discussion:\\
+The Rayleigh prbability distribution underpredicted the H\_1/10 values
+by 2.86\% but overpredicted the H\_mean and H\_rms values by 10.25\% and
+3.38\% (respectively). This may mean that a more normal curve would work
+better to estimate these values from the significant wave height. There
+also may be an anomoly in wave height that is not accounted for in the
+Rayleigh probability distribution, the H\_max is significantly higher
+than the significant wave height (more than double) and, therefore,
+calculations based on the significant wave height alone would
+underpredicted the top 10\% of data.
+
     
-    \hypertarget{discussion}{%
-\subsection{Discussion:}\label{discussion}}
 
-The grain size distribution is slight skewed towards smaller grain
-sizes. The curve is smooth and suggests that the sample is well-graded.
+    Problem 2
 
-    \hypertarget{question-c}{%
-\section{--------- Question c ---------}\label{question-c}}
+    Given: T = 16.0 s wave in a depth of h = 6.50 m with a bottom slope
+\textrm{tan}\betatan β = 0.040; Ks = 1.25
 
-    \hypertarget{given-s_quartz-2.65-rho_seawater-1025-kgm3-mu_seawater-0.00114-nsm2}{%
-\subsubsection{\texorpdfstring{{\textbf{GIVEN:}} \(s_{quartz} = 2.65\);
-\(\rho_{seawater} = 1025 kg/m^3\);
-\(\mu_{seawater} = 0.00114 Ns/m^2\)}{GIVEN: s\_\{quartz\} = 2.65; \textbackslash{}rho\_\{seawater\} = 1025 kg/m\^{}3; \textbackslash{}mu\_\{seawater\} = 0.00114 Ns/m\^{}2}}\label{given-s_quartz-2.65-rho_seawater-1025-kgm3-mu_seawater-0.00114-nsm2}}
+Find: (s) breaking wave height, Hb with Weggel 1972, compare with k
+assumed to be 0.78; (b) Type of breaker; (c) volume flux at breaking
 
-\hypertarget{find-plot-the-fall-velocity-cms-in-seawater-versus-percent-finer-than}{%
-\subsubsection{\texorpdfstring{{\textbf{FIND:}} Plot the fall velocity
-(cm/s) in seawater versus percent finer
-than}{FIND: Plot the fall velocity (cm/s) in seawater versus percent finer than}}\label{find-plot-the-fall-velocity-cms-in-seawater-versus-percent-finer-than}}
+Principles:
 
-\hypertarget{principles}{%
-\subsubsection{\texorpdfstring{{\textbf{PRINCIPLES:}}}{PRINCIPLES:}}\label{principles}}
-
-\hypertarget{equation-2.11-fall-velocity}{%
-\subsubsection{Equation 2.11 fall
-velocity:}\label{equation-2.11-fall-velocity}}
-
-\hypertarget{w}{%
-\subsubsection{\texorpdfstring{\$ w =
-\sqrt{\frac{4(\rho_s - \rho) g d}{3 \rho C_D}}\$}{\$ w = \$}}\label{w}}
-
-\hypertarget{reynolds-number}{%
-\subsubsection{Reynolds Number:}\label{reynolds-number}}
-
-\hypertarget{re-fracrho-w-dmu}{%
-\subsubsection{\texorpdfstring{\(Re = \frac{\rho w d}{\mu}\)}{Re = \textbackslash{}frac\{\textbackslash{}rho w d\}\{\textbackslash{}mu\}}}\label{re-fracrho-w-dmu}}
-
-\hypertarget{equation-2.13-approximation-for-a-spheres-drag-coefficient}{%
-\subsubsection{Equation 2.13 approximation for a sphere's drag
-coefficient
-:}\label{equation-2.13-approximation-for-a-spheres-drag-coefficient}}
-
-\hypertarget{c_d}{%
-\subsubsection{\texorpdfstring{\$ C\_D = \frac{24}{Re}
-\sqrt{(1 + \frac{3 Re}{16})}\$}{\$ C\_D =  \$}}\label{c_d}}
-
-    \hypertarget{solution-sample-calc-d-0.5-mm}{%
-\subsubsection{\texorpdfstring{{\textbf{SOLUTION: Sample Calc; d = 0.5
-mm}}}{SOLUTION: Sample Calc; d = 0.5 mm}}\label{solution-sample-calc-d-0.5-mm}}
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+\end{enumerate}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}30}]:} \PY{c+c1}{\PYZsh{} Base fall velocity }
-         \PY{n}{w} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{4}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{*} \PY{p}{(}\PY{l+m+mf}{2.65} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{9.81} \PY{o}{*} \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w is   }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ * C\PYZus{}D \PYZca{} (\PYZhy{} 1/2) m/s}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{w}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}103}]:} \PY{n}{T} \PY{o}{=} \PY{l+m+mf}{16.0} \PY{c+c1}{\PYZsh{}1/s}
+          \PY{n}{h} \PY{o}{=} \PY{l+m+mf}{6.50} \PY{c+c1}{\PYZsh{}m}
+          \PY{n}{tan\PYZus{}beta} \PY{o}{=} \PY{l+m+mf}{0.040}
+          
+          \PY{n}{a} \PY{o}{=} \PY{l+m+mf}{43.8} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{19} \PY{o}{*} \PY{n}{tan\PYZus{}beta}\PY{p}{)}\PY{p}{)}
+          \PY{n}{b} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{1.56}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{19.5} \PY{o}{*} \PY{n}{tan\PYZus{}beta}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-w is   0.1038797381590847 * C\_D \^{} (- 1/2) m/s
+{\color{incolor}In [{\color{incolor}104}]:} \PY{n}{sol} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+          \PY{n}{solindex} \PY{o}{=} \PY{l+m+mi}{0}
+          
+          \PY{n}{iteration} \PY{o}{=} \PY{l+m+mi}{0}
+          \PY{n}{initial\PYZus{}guess} \PY{o}{=} \PY{l+m+mf}{0.78}
+          \PY{c+c1}{\PYZsh{} input breaker index guess}
+          \PY{n}{Kb} \PY{o}{=} \PY{n}{initial\PYZus{}guess}
+          
+          \PY{n}{\PYZus{}break} \PY{o}{=} \PY{k+kc}{True}
+          
+          \PY{k}{while} \PY{n}{\PYZus{}break} \PY{o}{==} \PY{k+kc}{True}\PY{p}{:} 
+              \PY{n}{previous\PYZus{}guess} \PY{o}{=} \PY{n}{Kb}
+              
+              \PY{n}{Hb} \PY{o}{=} \PY{p}{(}\PY{n}{Kb} \PY{o}{*} \PY{l+m+mf}{6.50}\PY{p}{)}
+              \PY{n}{Kb} \PY{o}{=} \PY{n}{b} \PY{o}{\PYZhy{}} \PY{n}{a}\PY{o}{*}\PY{p}{(}\PY{n}{Hb}\PY{o}{/}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
+          
+              \PY{n}{error} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{Kb}\PY{o}{\PYZhy{}}\PY{n}{previous\PYZus{}guess}\PY{p}{)} 
+              \PY{c+c1}{\PYZsh{} calculate error}
+              \PY{k}{if} \PY{p}{(}\PY{n}{error} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mf}{0.000000001}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{n}{error} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:} 
+                  \PY{c+c1}{\PYZsh{} break when the error threshold is met}
+                  \PY{n}{\PYZus{}break} \PY{o}{=} \PY{k+kc}{False}
+              \PY{n}{iteration} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+          
+          \PY{n}{sol}\PY{p}{[}\PY{n}{solindex}\PY{p}{]} \PY{o}{=} \PY{n}{Kb} 
+          \PY{c+c1}{\PYZsh{}converged solution added}
+          \PY{n}{solindex} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+          
+          \PY{n}{Kb\PYZus{}iter} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{sol}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{Hb\PYZus{}iter} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{Kb\PYZus{}iter} \PY{o}{*} \PY{l+m+mf}{6.50}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}105}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Calculated with Weggel(1972), the breaking wave height (Hb) is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with a break point (Kb) value of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Hb\PYZus{}iter}\PY{p}{,} \PY{n}{Kb\PYZus{}iter}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Calculated with Weggel(1972), the breaking wave height (Hb) is 6.56 m 
+ with a break point (Kb) value of 1.01
 
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}31}]:} \PY{c+c1}{\PYZsh{} Reynolds number (sewater)}
-         \PY{c+c1}{\PYZsh{} Density of seawater 1025}
-         \PY{c+c1}{\PYZsh{} Viscosity of seawater .00114}
-         
-         \PY{n}{Re} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1025}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mf}{0.00114}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Re is   }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ * w (m/s)}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Re}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}106}]:} \PY{c+c1}{\PYZsh{}k = H/h}
+          \PY{n}{H\PYZus{}assumed} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.78}\PY{p}{)} \PY{o}{*} \PY{n}{h}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With an assumed break point (Kb) value of 0.78, }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ the calculated breaking wave height (Hb) is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}assumed}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-Re is   449.5614035087719 * w (m/s)
-
-    \end{Verbatim}
-
-    \hypertarget{iterate-1}{%
-\paragraph{Iterate 1}\label{iterate-1}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}32}]:} \PY{c+c1}{\PYZsh{} Iterate with C\PYZus{}D, guess C\PYZus{}D = 2}
-         \PY{n}{w2} \PY{o}{=} \PY{n}{w} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w2 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ m/s}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{w2}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-w2 is 0.07345406728017176 m/s
+With an assumed break point (Kb) value of 0.78, 
+ the calculated breaking wave height (Hb) is 5.07 m
 
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}33}]:} \PY{n}{Re2} \PY{o}{=} \PY{p}{(}\PY{n}{Re} \PY{o}{*} \PY{n}{w2}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Re2 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Re2}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-Re2 is 33.02211357990178
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}34}]:} \PY{n}{CD} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{Re2}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{Re2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CD is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CD}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-CD is 1.9490390236439714
-
-    \end{Verbatim}
-
-    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
-
-    \hypertarget{iterate-2}{%
-\paragraph{Iterate 2}\label{iterate-2}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}35}]:} \PY{c+c1}{\PYZsh{} Iterate with C\PYZus{}D, C\PYZus{}D = 1.1055931228942726}
-         \PY{n}{w3} \PY{o}{=} \PY{p}{(}\PY{n}{w} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{CD}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w3 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ m/s}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{w3}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-w3 is 0.07440816234970565 m/s
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}36}]:} \PY{n}{Re3} \PY{o}{=} \PY{p}{(}\PY{n}{Re} \PY{o}{*} \PY{n}{w3}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Re3 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Re3}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-Re3 is 33.45103789844223
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}37}]:} \PY{n}{CD2} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{Re3}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{Re3}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CD2 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CD2}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-CD2 is 1.9347758504361243
-
-    \end{Verbatim}
-
-    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
-
-    \hypertarget{iterate-3}{%
-\subsubsection{Iterate 3}\label{iterate-3}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}38}]:} \PY{c+c1}{\PYZsh{} Iterate with C\PYZus{}D, C\PYZus{}D = 1.5191487630679061}
-         
-         \PY{n}{w4} \PY{o}{=} \PY{p}{(}\PY{n}{w} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{CD2}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{w4 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ m/s}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{w4}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-w4 is 0.07468192732197794 m/s
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}39}]:} \PY{n}{Re4} \PY{o}{=} \PY{p}{(}\PY{n}{Re} \PY{o}{*} \PY{n}{w4}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Re4 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Re4}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-Re4 is 33.5741120636085
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}40}]:} \PY{n}{CD3} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{Re4}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{Re4}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{CD3 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{CD3}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-CD3 is 1.9307395831211043
-
-    \end{Verbatim}
-
-    \hypertarget{for-the-sample-calculation-with-d-0.5-mm-the-fall-velocity-is-0.075-ms-or-7.5-cms}{%
-\subsubsection{For the sample calculation, with d = 0.5 mm, the fall
-velocity is 0.075 m/s or 7.5
-cm/s}\label{for-the-sample-calculation-with-d-0.5-mm-the-fall-velocity-is-0.075-ms-or-7.5-cms}}
-
-    \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
-
-    \hypertarget{solve-for-all-data}{%
-\section{Solve for all data}\label{solve-for-all-data}}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}41}]:} \PY{n}{grains} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GrainSize\PYZus{}mm}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} 
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{w\PYZus{}result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
-         \PY{n}{Re\PYZus{}result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
-         
-         \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n}{grains}\PY{p}{:}
-             \PY{n}{w} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{4}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{*} \PY{p}{(}\PY{l+m+mf}{2.65} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{l+m+mf}{9.81} \PY{o}{*} \PY{p}{(}\PY{n}{g}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{)}
-             \PY{n}{w\PYZus{}result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w}\PY{p}{)}
-             \PY{n}{Re} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1025}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{g}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{1000}\PY{p}{)}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mf}{0.00114}\PY{p}{)}
-             \PY{n}{Re\PYZus{}result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{Re}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}45}]:} \PY{c+c1}{\PYZsh{} Iterate}
-         \PY{n}{CD}\PY{o}{=}\PY{l+m+mi}{10}
-         \PY{n}{w2\PYZus{}result} \PY{o}{=} \PY{p}{[}\PY{p}{]}
-         \PY{k}{for} \PY{n}{w} \PY{o+ow}{in} \PY{n}{w\PYZus{}result}\PY{p}{:}
-             \PY{n}{w2} \PY{o}{=} \PY{n}{w} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{CD}\PY{p}{)}
-             \PY{n}{w2\PYZus{}result}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{w2}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}46}]:} \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}base\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{w\PYZus{}result}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re\PYZus{}base}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{Re\PYZus{}result}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w2\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{n}{w2\PYZus{}result}\PY{p}{\PYZcb{}}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}47}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re\PYZus{}base}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w2\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}48}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}49}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w3\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}base\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD2}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}50}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re\PYZus{}base}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w3\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}51}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}52}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w4\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}base\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD3}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}53}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re\PYZus{}base}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w4\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}54}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}55}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w5\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}base\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD4}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}56}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re\PYZus{}base}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w5\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w6\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}base\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD5}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}59}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re\PYZus{}base}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w6\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}60}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{24}\PY{o}{/}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{*}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Re6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}61}]:} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w7\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}base\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CD6}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}69}]:} \PY{c+c1}{\PYZsh{} Convert fall velocities from m/s to cm/s and add to data frame}
-         \PY{n}{data}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
-         \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}cm\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w7\PYZus{}m\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{*} \PY{l+m+mi}{100}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}75}]:} \PY{n}{data}
+{\color{incolor}In [{\color{incolor}107}]:} \PY{n}{Errors}\PY{p}{(}\PY{n}{Hb\PYZus{}iter}\PY{p}{,} \PY{n}{H\PYZus{}assumed}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}75}]:}     index  GrainSize\_mm  Percent  CumulativePercCoarser  CumulativePercFiner  \textbackslash{}
-         0       4         4.000     0.00                   0.00               100.00   
-         1       5         3.364     0.26                   0.26                99.74   
-         2       6         2.828     0.16                   0.42                99.58   
-         3       7         2.378     0.17                   0.59                99.41   
-         4       8         2.000     0.22                   0.81                99.19   
-         5       9         1.682     0.22                   1.03                98.97   
-         6      10         1.414     0.48                   1.51                98.49   
-         7      11         1.189     0.76                   2.27                97.73   
-         8      12         1.000     0.83                   3.10                96.90   
-         9      13         0.841     1.59                   4.69                95.31   
-         10     14         0.707     2.10                   6.79                93.21   
-         11     15         0.595     2.73                   9.52                90.48   
-         12     16         0.500     6.19                  15.71                84.29   
-         13     17         0.420     4.45                  20.16                79.84   
-         14     18         0.354     7.09                  27.25                72.75   
-         15     19         0.297     9.44                  36.69                63.31   
-         16     20         0.250    17.41                  54.10                45.90   
-         17     21         0.210    13.82                  67.92                32.08   
-         18     22         0.177    15.51                  83.43                16.57   
-         19     23         0.149     9.92                  93.35                 6.65   
-         20     24         0.125     4.83                  98.18                 1.82   
-         21     25         0.105     1.55                  99.73                 0.27   
-         22     26         0.088     0.16                  99.89                 0.11   
-         23     27         0.074     0.09                  99.98                 0.02   
-         24     28         0.063     0.01                  99.99                 0.01   
-         25     29         0.053     0.01                 100.00                 0.00   
-         
-                  phi     w\_cm\_s  GrainSize\_cm  
-         0  -2.000000  62.673921        0.4000  
-         1  -1.750178  52.695555        0.3364  
-         2  -1.499782  44.282112        0.2828  
-         3  -1.249749  37.214095        0.2378  
-         4  -1.000000  31.271864        0.2000  
-         5  -0.750178  26.266996        0.1682  
-         6  -0.499782  22.042285        0.1414  
-         7  -0.249749  18.487592        0.1189  
-         8  -0.000000  15.492621        0.1000  
-         9   0.249822  12.962643        0.0841  
-         10  0.500218  10.818537        0.0707  
-         11  0.749038   9.013115        0.0595  
-         12  1.000000   7.466875        0.0500  
-         13  1.251539   6.148806        0.0420  
-         14  1.498179   5.045678        0.0354  
-         15  1.751465   4.078026        0.0297  
-         16  2.000000   3.268669        0.0250  
-         17  2.251539   2.574114        0.0210  
-         18  2.498179   2.003295        0.0177  
-         19  2.746616   1.529766        0.0149  
-         20  3.000000   1.142582        0.0125  
-         21  3.251539   0.842958        0.0105  
-         22  3.506353   0.612332        0.0088  
-         23  3.756331   0.443812        0.0074  
-         24  3.988504   0.327436        0.0063  
-         25  4.237864   0.235312        0.0053  
+{\color{outcolor}Out[{\color{outcolor}107}]:} 22.710000000000001
 \end{Verbatim}
             
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}76}]:} \PY{c+c1}{\PYZsh{} Convert grain size from mm to cm and add to dataframe}
-         \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GrainSize\PYZus{}cm}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GrainSize\PYZus{}mm}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{/} \PY{l+m+mi}{10}
-\end{Verbatim}
+    Discussion:\\
+The assumed breakpoint value that is often cited (0.78) produces an
+underestimate of the breaking wave height by 22.7\%. This must be
+because the 0.78 value is derived from a solitary wave with simple
+conditions (no wave steepness and no slope incorporated), therefore
+assuming a linear relationship between breaking wave height and local
+water depth, indicating that the wave will break when its height is
+approximately 0.8 of the depth. However, with a tan\_beta of 0.040
+(slope of 2.3) the wave will steepen due to shoaling because of
+shallower depth with the bottom slope. The Weggel empirical model
+incorporates more nonlinearities, including wave steepness, which
+increases as it enters shallower water with the sloping bathymetry.
 
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}98}]:} \PY{n}{x} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}cm\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-         \PY{n}{y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CumulativePercFiner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-         
-         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
-         
-         \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fall velocity (cm/s)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Percent Finer Than}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-         \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fall velocity (cm/s) in seawater versus }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ percent finer than}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{14}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}98}]:} Text(0.5, 1.0, 'Fall velocity (cm/s) in seawater versus \textbackslash{}n percent finer than')
-\end{Verbatim}
-            
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_72_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
     
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\item
+\end{enumerate}
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}100}]:} \PY{n}{x} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{w\PYZus{}cm\PYZus{}s}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-          \PY{n}{y} \PY{o}{=} \PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{CumulativePercFiner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+{\color{incolor}In [{\color{incolor}108}]:} \PY{n}{Ks} \PY{o}{=} \PY{l+m+mf}{1.25}
           
-          \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{y}\PY{p}{)}
-          
-          \PY{n}{plt}\PY{o}{.}\PY{n}{xscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{yscale}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{log}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          
-          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fall velocity (cm/s)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Percent Finer Than}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-          
-          \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fall velocity (cm/s) in seawater versus }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ percent finer than, log\PYZhy{}scale}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{14}\PY{p}{)}
+          \PY{n}{L\PYZus{}0} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
+          \PY{n}{H\PYZus{}0} \PY{o}{=} \PY{n}{Hb\PYZus{}iter}\PY{o}{/}\PY{n}{Ks}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}100}]:} Text(0.5, 1.0, 'Fall velocity (cm/s) in seawater versus \textbackslash{}n percent finer than, log-scale')
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}109}]:} \PY{n}{surf\PYZus{}param} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{tan\PYZus{}beta}\PY{o}{/}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{H\PYZus{}0}\PY{o}{/}\PY{n}{L\PYZus{}0}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The surf similarity parameter is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{surf\PYZus{}param}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
-            
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_73_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The surf similarity parameter is 0.349
+
+    \end{Verbatim}
+
+    With a surf similarity parameter of 0.35, this wave is a spilling
+breaker. This type of breaking wave is characterized by a relative low
+wave stpeeness and mild nearshore slope.
+
     
-    \hypertarget{discussion}{%
-\subsection{Discussion:}\label{discussion}}
 
-The fall velocity increases rapidly as percent finer than increases.
-Maximum fall veloicty was 62.7 cm /s for the grain size of 4 mm. The
-smallest grain size had a fall velocity of 0.2 cm/s which is incredibly
-slow, this sediment would be effectively suspended. This theoretical
-approach of computing the fall velocity required some assumptions.
-Namely, we are approximating the drag coefficient for sediment that is
-(1) perfectly spherical, (2) in water that is perfectly still and that
-(3) entirely made of quartz. We need to assume that the sediment is
-comprised of perfect spheres so that we can assume that the drag and
-lift forces are orhogonal and the forces go to 0. In reality, this
-calculation is idealized. The sediment grains may be irregular and may
-not be perfectly smooth spheres, resulting in an unequal balance of
-forces and the true fall velocity curve would appear less smooth. We are
-also assuming the sediment is at terminal veloicty and therefore falling
-through smooth water. However, if these data are derived from an oceanic
-setting, wave motions and prevailing currents would also affect the
-velocity calculations. While quartz typically makes up 70\% of beach
-minerals, also know that coastal sediment can be made of a mix of other
-minerals including feldspar, shell, coral, etc. Therefore, assuming a
-consistent specific gravity of 2.65 (quartz) is inconsistent with
-reality.
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\item
+\end{enumerate}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}110}]:} \PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{g} \PY{o}{*} \PY{n}{h}\PY{p}{)} 
+          \PY{c+c1}{\PYZsh{} m/s}
+          \PY{n}{Q} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{n}{g} \PY{o}{*} \PY{p}{(}\PY{n}{Hb\PYZus{}iter}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{8}\PY{o}{*}\PY{n}{c}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+          \PY{n}{Q} \PY{c+c1}{\PYZsh{}m\PYZca{}2/s}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The voume flux at the point of breaking is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m\PYZca{}2/s}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Q}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The voume flux at the point of breaking is 6.61 m\^{}2/s
+
+    \end{Verbatim}
+
+    
+
+    Problem 3
+
+    Given: A normally incident (perpendicular) deep-water wave with
+significant Hos = 2.90 m and T = 19.5 s propagates towards shore on a
+bottom slope of \textrm{tan}\betatan β = 0.150. The wave breaks at a
+depth of h = 5.40 m. Assuming the breaker index \kappa=\frac{H_b}{h_b}κ
+= H b h b = 0.78 adequately estimates the breaking wave height
+
+Find: (a) wave setup at the still-water shoreline; (b) Wave runup; (c)
+Compare (a) and (b)
+
+Principles:
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+\end{enumerate}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}111}]:} \PY{n}{H\PYZus{}sig} \PY{o}{=} \PY{l+m+mf}{2.90}
+          \PY{n}{T} \PY{o}{=} \PY{l+m+mf}{19.5}
+          \PY{n}{tan\PYZus{}beta} \PY{o}{=} \PY{l+m+mf}{0.150}
+          \PY{n}{h\PYZus{}break} \PY{o}{=} \PY{l+m+mf}{5.40}
+          \PY{n}{K\PYZus{}breaker} \PY{o}{=} \PY{l+m+mf}{0.78}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}112}]:} \PY{n}{x\PYZus{}shoreline} \PY{o}{=} \PY{n}{h\PYZus{}break} \PY{o}{/} \PY{n}{tan\PYZus{}beta}
+          
+          \PY{c+c1}{\PYZsh{} set up = \PYZhy{} (0.12 to 0.15)(\PYZhy{} tan\PYZus{}beta)(x\PYZus{}shoreline)}
+          \PY{n}{s\PYZus{}1} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}} \PY{l+m+mf}{0.12}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{o}{\PYZhy{}} \PY{n}{tan\PYZus{}beta}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{x\PYZus{}shoreline}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+          \PY{n}{s\PYZus{}2} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}} \PY{l+m+mf}{0.15}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{tan\PYZus{}beta}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{x\PYZus{}shoreline}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The wave setup at the still\PYZhy{}water shoreline }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ is between }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ to }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{0 m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{s\PYZus{}1}\PY{p}{,} \PY{n}{s\PYZus{}2}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The wave setup at the still-water shoreline 
+ is between 0.648 to 0.810 m
+
+    \end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\item
+\end{enumerate}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}115}]:} \PY{n}{L\PYZus{}0} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
+          \PY{n}{L\PYZus{}1} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}\PY{o}{*} \PYZbs{}
+          \PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{tanh}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{o}{/}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{p}{(}\PY{n}{h\PYZus{}break}\PY{o}{/}\PY{n}{g}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)} 
+          \PY{c+c1}{\PYZsh{} L\PYZus{}1 Approximated with Fenton and McKee}
+          
+          \PY{n}{k\PYZus{}1} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*} \PY{n}{math}\PY{o}{.}\PY{n}{pi}\PY{p}{)} \PY{o}{/} \PY{n}{L\PYZus{}1}
+          
+          \PY{n}{N\PYZus{}0} \PY{o}{=} \PY{l+m+mf}{0.5}
+          \PY{n}{N\PYZus{}1} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{k\PYZus{}1} \PY{o}{*} \PY{n}{h\PYZus{}break}\PY{p}{)} \PY{o}{/} \PYZbs{}
+                             \PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sinh}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k\PYZus{}1}\PY{o}{*}\PY{n}{h\PYZus{}break}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          
+          \PY{n}{Ks} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{N\PYZus{}0} \PY{o}{*} \PY{n}{L\PYZus{}0}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{N\PYZus{}1} \PY{o}{*} \PY{n}{L\PYZus{}1}\PY{p}{)} \PY{p}{)}
+          \PY{n}{H\PYZus{}1} \PY{o}{=} \PY{n}{K\PYZus{}breaker} \PY{o}{*} \PY{n}{h\PYZus{}break}
+          \PY{n}{H\PYZus{}0} \PY{o}{=} \PY{n}{H\PYZus{}1} \PY{o}{/} \PY{n}{Ks}
+          \PY{c+c1}{\PYZsh{} Shoaling to find H\PYZus{}0}
+          
+          
+          \PY{n}{surf\PYZus{}sim\PYZus{}param} \PY{o}{=} \PY{n}{tan\PYZus{}beta} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{H\PYZus{}0}\PY{o}{/}\PY{n}{L\PYZus{}0}\PY{p}{)}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} deepwater height and length}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}116}]:} \PY{n}{Rs} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.38} \PY{o}{*} \PY{n}{surf\PYZus{}sim\PYZus{}param} \PY{o}{*} \PY{n}{H\PYZus{}sig}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The wave run up }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Rs}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The wave run up 
+ is 8.62 m
+
+    \end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{2}
+\item
+\end{enumerate}
+
+    Wave setup is the mean increase in vertical water level due to wave
+breaking. These values are usually pretty low, around 20\% of the
+breaking wave height, but can reach up to approximately 1 m during
+storms. From this problem, the wave setup is 0.648 to 0.810 m. The runup
+is the uprush of water at the shore due to wave breaking and depends on
+wave conditions, bototm slope, and 3d effects. Runup, by definition,
+includes setup so it makes sense that it is significantly larger than
+the setup value. So the vertical uprush of water, including setup (0.65
+- 0.81 m) in total is 8.62 m.
+
+    
+
+    Problem 4
+
+    Given: Tide data at station 8635750
+
+Find: (a) tidal form (b) storm water level at mean sea level and mean
+lower low water
+
+Principles:
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+\end{enumerate}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}117}]:} \PY{n}{a\PYZus{}k1} \PY{o}{=} \PY{l+m+mf}{0.023}
+          \PY{n}{a\PYZus{}o1} \PY{o}{=} \PY{l+m+mf}{0.019}
+          \PY{n}{a\PYZus{}m2} \PY{o}{=} \PY{l+m+mf}{0.184}
+          \PY{n}{a\PYZus{}s2} \PY{o}{=} \PY{l+m+mf}{0.028}
+          
+          \PY{n}{R} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{a\PYZus{}k1} \PY{o}{+} \PY{n}{a\PYZus{}o1}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{a\PYZus{}m2} \PY{o}{+} \PY{n}{a\PYZus{}s2}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+          
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The tidal form number is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ this means the tide type is semidiurnal }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ since it is less than 0.25.}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{R}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The tidal form number is 0.198 m 
+ this means the tide type is semidiurnal 
+ since it is less than 0.25.
+
+    \end{Verbatim}
+
+    \begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\setcounter{enumi}{1}
+\item
+\end{enumerate}
 
 
     % Add a bibliography block to the postdoc
