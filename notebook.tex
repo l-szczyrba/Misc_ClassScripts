@@ -141,7 +141,7 @@
     \def\gt{>}
     \def\lt{<}
     % Document parameters
-    \title{CSTLEngin\_HW3}
+    \title{CSTLEngin\_HW4}
     
     
     
@@ -280,7 +280,7 @@
     
 
     
-    Coastal Engineering - Homework 1
+    Coastal Engineering - Homework 4
 
     Honor Code Pledge: ``I have neither given nor received unauthorized
 assistance on this assignment.''
@@ -288,7 +288,7 @@ assistance on this assignment.''
 Signature:
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}94}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+{\color{incolor}In [{\color{incolor}67}]:} \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
          \PY{k+kn}{import} \PY{n+nn}{math}
          \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
          \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
@@ -296,428 +296,189 @@ Signature:
          
          \PY{n}{g} \PY{o}{=} \PY{l+m+mf}{9.81} \PY{c+c1}{\PYZsh{} m/s\PYZca{}2}
          \PY{n}{pi} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{pi}
+         \PY{n}{rho} \PY{o}{=} \PY{l+m+mi}{1030} \PY{c+c1}{\PYZsh{}kg/m\PYZca{}2}
 \end{Verbatim}
 
-
-    Problem 1
-
-    Given: wave heights (m)
-
-Find: Calculate Hmax, H1/10, H1/3, Hmean, and Hrms; estimate with the
-Rayleigh probaiblity distribtion H1/10, Hmean, and Hrms. Find Error.
-
-Principles:
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}95}]:} \PY{n}{data} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}table}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HwavestatsF18.dat}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZbs{}}\PY{l+s+s2}{s+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}  \PY{n}{names} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wv\PYZus{}ht\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}96}]:} \PY{k}{def} \PY{n+nf}{statistics}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{n}{column\PYZus{}name}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{:}
-             \PY{n}{data}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{column\PYZus{}name}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)} 
-             \PY{c+c1}{\PYZsh{} sort values largest to smallest}
-             
-             \PY{n}{H\PYZus{}max} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{column\PYZus{}name}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-             \PY{n}{H\PYZus{}mean} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{n}{column\PYZus{}name}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-                        
-             \PY{n}{count\PYZus{}row} \PY{o}{=} \PY{n}{data}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
-             \PY{n}{count\PYZus{}row}
-             \PY{n}{count\PYZus{}third} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{count\PYZus{}row} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} 
-             \PY{c+c1}{\PYZsh{}Python indexing starts at 0, so must substract 1 from the count}
-             \PY{n}{count\PYZus{}tenth} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{count\PYZus{}row} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1}\PY{o}{/}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} 
-             \PY{c+c1}{\PYZsh{}Python indexing starts at 0, so must substract 1 from the count}
-                        
-             \PY{n}{H\PYZus{}third} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n}{count\PYZus{}third}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{)}
-             \PY{n}{H\PYZus{}tenth} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{float}\PY{p}{(}\PY{n+nb}{round}\PY{p}{(}\PY{n}{data}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n}{count\PYZus{}tenth}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{)}
-             
-             \PY{n}{H\PYZus{}rms} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{data}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wv\PYZus{}ht\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-             
-             \PY{k}{return} \PY{n}{H\PYZus{}max}\PY{p}{,} \PY{n}{H\PYZus{}mean}\PY{p}{,} \PY{n}{H\PYZus{}third}\PY{p}{,} \PY{n}{H\PYZus{}tenth}\PY{p}{,} \PY{n}{H\PYZus{}rms}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}97}]:} \PY{n}{H\PYZus{}max}\PY{p}{,} \PY{n}{H\PYZus{}mean}\PY{p}{,} \PY{n}{H\PYZus{}third}\PY{p}{,} \PY{n}{H\PYZus{}tenth}\PY{p}{,} \PY{n}{H\PYZus{}rms} \PY{o}{=} \PY{n}{statistics}\PY{p}{(}\PY{n}{data}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{wv\PYZus{}ht\PYZus{}m}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}max is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}max}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}1/10 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}tenth}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}1/3 is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}mean is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}mean}\PY{p}{)}\PY{p}{)}
-         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}rms is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}rms}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-H\_max is 12.42 m
-H\_1/10 is 4.54 m
-H\_1/3 is 3.47 m
-H\_mean is 1.97 m
-H\_rms is 2.37 m
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}98}]:} \PY{k}{def} \PY{n+nf}{Rayleigh\PYZus{}estimate}\PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{:}
-             \PY{n}{est\PYZus{}H\PYZus{}tenth} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.27} \PY{o}{*} \PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-             \PY{n}{est\PYZus{}H\PYZus{}mean} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.27} \PY{o}{*} \PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{2.03}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-             \PY{n}{est\PYZus{}H\PYZus{}rms} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.27} \PY{o}{*} \PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{)} \PY{o}{/} \PY{l+m+mf}{1.80}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-             
-             \PY{k}{return} \PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}rms}  
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}99}]:} \PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}rms} \PY{o}{=} \PY{n}{Rayleigh\PYZus{}estimate}\PY{p}{(}\PY{n}{H\PYZus{}third}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}100}]:} \PY{k}{def} \PY{n+nf}{Errors}\PY{p}{(}\PY{n}{true}\PY{p}{,} \PY{n}{estimate}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}\PY{p}{:}
-              \PY{n}{error} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{true} \PY{o}{\PYZhy{}} \PY{n}{estimate}\PY{p}{)}\PY{o}{/}\PY{n}{true} \PY{o}{*} \PY{l+m+mi}{100}\PY{p}{)}\PY{p}{,} \PY{n}{rounding}\PY{p}{)}
-              
-              \PY{k}{return} \PY{n}{error}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}101}]:} \PY{n}{error\PYZus{}H\PYZus{}tenth} \PY{o}{=} \PY{n}{Errors}\PY{p}{(}\PY{n}{H\PYZus{}tenth}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-          \PY{n}{error\PYZus{}H\PYZus{}mean} \PY{o}{=} \PY{n}{Errors}\PY{p}{(}\PY{n}{H\PYZus{}mean}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-          \PY{n}{error\PYZus{}H\PYZus{}rms} \PY{o}{=} \PY{n}{Errors}\PY{p}{(}\PY{n}{H\PYZus{}rms}\PY{p}{,} \PY{n}{est\PYZus{}H\PYZus{}rms}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}102}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}1/10 estimated from Rayleigh probability distribution is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with an error of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{est\PYZus{}H\PYZus{}tenth}\PY{p}{,} \PY{n}{error\PYZus{}H\PYZus{}tenth}\PY{p}{)}\PY{p}{)}
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}mean estimated from Rayleigh probability distribution is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with an error of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{est\PYZus{}H\PYZus{}mean}\PY{p}{,} \PY{n}{error\PYZus{}H\PYZus{}mean}\PY{p}{)}\PY{p}{)}
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{H\PYZus{}rms estimated from Rayleigh probability distribution is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with an error of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{est\PYZus{}H\PYZus{}rms}\PY{p}{,} \PY{n}{error\PYZus{}H\PYZus{}rms}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-H\_1/10 estimated from Rayleigh probability distribution is 4.41 m 
- with an error of 2.86\%
-H\_mean estimated from Rayleigh probability distribution is 2.17 m 
- with an error of 10.15\%
-H\_rms estimated from Rayleigh probability distribution is 2.45 m 
- with an error of 3.38\%
-
-    \end{Verbatim}
-
-    Discussion:\\
-The Rayleigh prbability distribution underpredicted the H\_1/10 values
-by 2.86\% but overpredicted the H\_mean and H\_rms values by 10.25\% and
-3.38\% (respectively). This may mean that a more normal curve would work
-better to estimate these values from the significant wave height. There
-also may be an anomoly in wave height that is not accounted for in the
-Rayleigh probability distribution, the H\_max is significantly higher
-than the significant wave height (more than double) and, therefore,
-calculations based on the significant wave height alone would
-underpredicted the top 10\% of data.
-
-    
-
-    Problem 2
-
-    Given: T = 16.0 s wave in a depth of h = 6.50 m with a bottom slope
-\textrm{tan}\betatan β = 0.040; Ks = 1.25
-
-Find: (s) breaking wave height, Hb with Weggel 1972, compare with k
-assumed to be 0.78; (b) Type of breaker; (c) volume flux at breaking
-
-Principles:
 
     \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
+\def\labelenumi{\arabic{enumi})}
 \item
 \end{enumerate}
 
+    \begin{enumerate}
+\def\labelenumi{\alph{enumi})}
+\item
+\end{enumerate}
+
+    \begin{itemize}
+\item
+  Given: A constant depth when h = 4 m and when h = 8 m when the wind
+  speed is 45 m/s (at 10-m elevation). Assume wind setup is zero at x =
+  0.
+\item
+  Find: Plot wind setup versus distance (from x = 0 to 50 km), Show
+  calculations and final value of wind setup when x = 50 km for both
+  cases in part (a).
+\item
+  Principles:\\
+  )\\
+  )\\
+  )
+\end{itemize}
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}103}]:} \PY{n}{T} \PY{o}{=} \PY{l+m+mf}{16.0} \PY{c+c1}{\PYZsh{}1/s}
-          \PY{n}{h} \PY{o}{=} \PY{l+m+mf}{6.50} \PY{c+c1}{\PYZsh{}m}
-          \PY{n}{tan\PYZus{}beta} \PY{o}{=} \PY{l+m+mf}{0.040}
-          
-          \PY{n}{a} \PY{o}{=} \PY{l+m+mf}{43.8} \PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{19} \PY{o}{*} \PY{n}{tan\PYZus{}beta}\PY{p}{)}\PY{p}{)}
-          \PY{n}{b} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{1.56}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mf}{19.5} \PY{o}{*} \PY{n}{tan\PYZus{}beta}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}68}]:} \PY{n}{Cf} \PY{o}{=} \PY{l+m+mf}{0.000002}
+         \PY{n}{W} \PY{o}{=} \PY{l+m+mi}{45} \PY{c+c1}{\PYZsh{}m/s}
+         \PY{n}{h\PYZus{}4} \PY{o}{=} \PY{l+m+mi}{4} \PY{c+c1}{\PYZsh{}m}
+         \PY{n}{h\PYZus{}8} \PY{o}{=} \PY{l+m+mi}{8} \PY{c+c1}{\PYZsh{}m}
+         \PY{n}{x} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{Series}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{50001}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{}m}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}104}]:} \PY{n}{sol} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
-          \PY{n}{solindex} \PY{o}{=} \PY{l+m+mi}{0}
-          
-          \PY{n}{iteration} \PY{o}{=} \PY{l+m+mi}{0}
-          \PY{n}{initial\PYZus{}guess} \PY{o}{=} \PY{l+m+mf}{0.78}
-          \PY{c+c1}{\PYZsh{} input breaker index guess}
-          \PY{n}{Kb} \PY{o}{=} \PY{n}{initial\PYZus{}guess}
-          
-          \PY{n}{\PYZus{}break} \PY{o}{=} \PY{k+kc}{True}
-          
-          \PY{k}{while} \PY{n}{\PYZus{}break} \PY{o}{==} \PY{k+kc}{True}\PY{p}{:} 
-              \PY{n}{previous\PYZus{}guess} \PY{o}{=} \PY{n}{Kb}
-              
-              \PY{n}{Hb} \PY{o}{=} \PY{p}{(}\PY{n}{Kb} \PY{o}{*} \PY{l+m+mf}{6.50}\PY{p}{)}
-              \PY{n}{Kb} \PY{o}{=} \PY{n}{b} \PY{o}{\PYZhy{}} \PY{n}{a}\PY{o}{*}\PY{p}{(}\PY{n}{Hb}\PY{o}{/}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}
-          
-              \PY{n}{error} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{Kb}\PY{o}{\PYZhy{}}\PY{n}{previous\PYZus{}guess}\PY{p}{)} 
-              \PY{c+c1}{\PYZsh{} calculate error}
-              \PY{k}{if} \PY{p}{(}\PY{n}{error} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{l+m+mf}{0.000000001}\PY{p}{)} \PY{o+ow}{or} \PY{p}{(}\PY{n}{error} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:} 
-                  \PY{c+c1}{\PYZsh{} break when the error threshold is met}
-                  \PY{n}{\PYZus{}break} \PY{o}{=} \PY{k+kc}{False}
-              \PY{n}{iteration} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
-          
-          \PY{n}{sol}\PY{p}{[}\PY{n}{solindex}\PY{p}{]} \PY{o}{=} \PY{n}{Kb} 
-          \PY{c+c1}{\PYZsh{}converged solution added}
-          \PY{n}{solindex} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
-          
-          \PY{n}{Kb\PYZus{}iter} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{sol}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-          \PY{n}{Hb\PYZus{}iter} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{Kb\PYZus{}iter} \PY{o}{*} \PY{l+m+mf}{6.50}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}69}]:} \PY{n}{wind\PYZus{}stress} \PY{o}{=} \PY{n}{rho}\PY{o}{*}\PY{n}{Cf}\PY{o}{*}\PY{p}{(}\PY{n}{W}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}
+         \PY{n}{setup\PYZus{}a} \PY{o}{=} \PY{n}{x}\PY{o}{*}\PY{n}{wind\PYZus{}stress}\PY{o}{/}\PY{p}{(}\PY{n}{rho}\PY{o}{*}\PY{n}{g}\PY{o}{*}\PY{n}{h\PYZus{}4}\PY{p}{)}
+         \PY{n}{setup\PYZus{}b} \PY{o}{=} \PY{n}{x}\PY{o}{*}\PY{n}{wind\PYZus{}stress}\PY{o}{/}\PY{p}{(}\PY{n}{rho}\PY{o}{*}\PY{n}{g}\PY{o}{*}\PY{n}{h\PYZus{}8}\PY{p}{)}
+         
+         \PY{n}{setup\PYZus{}a} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{setup\PYZus{}a}\PY{p}{)}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}} \PY{l+m+mi}{0}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Setup\PYZus{}h4}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+         \PY{n}{setup\PYZus{}b} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{setup\PYZus{}b}\PY{p}{)}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}} \PY{l+m+mi}{0}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Setup\PYZus{}h8}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+         
+         \PY{n}{Setup} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{concat}\PY{p}{(}\PY{p}{[}\PY{n}{setup\PYZus{}a}\PY{p}{,} \PY{n}{setup\PYZus{}b}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}105}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Calculated with Weggel(1972), the breaking wave height (Hb) is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ with a break point (Kb) value of }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Hb\PYZus{}iter}\PY{p}{,} \PY{n}{Kb\PYZus{}iter}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}70}]:} \PY{n}{fig} \PY{o}{=} \PY{n}{Setup}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{line}\PY{p}{(}\PY{p}{)}
+         \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Distance (m)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+         \PY{n}{fig}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Wind setup (m)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
 \end{Verbatim}
 
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-Calculated with Weggel(1972), the breaking wave height (Hb) is 6.56 m 
- with a break point (Kb) value of 1.01
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}106}]:} \PY{c+c1}{\PYZsh{}k = H/h}
-          \PY{n}{H\PYZus{}assumed} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.78}\PY{p}{)} \PY{o}{*} \PY{n}{h}
-          
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{With an assumed break point (Kb) value of 0.78, }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ the calculated breaking wave height (Hb) is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{H\PYZus{}assumed}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-With an assumed break point (Kb) value of 0.78, 
- the calculated breaking wave height (Hb) is 5.07 m
-
-    \end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}107}]:} \PY{n}{Errors}\PY{p}{(}\PY{n}{Hb\PYZus{}iter}\PY{p}{,} \PY{n}{H\PYZus{}assumed}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-\end{Verbatim}
-
-
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}107}]:} 22.710000000000001
-\end{Verbatim}
-            
-    Discussion:\\
-The assumed breakpoint value that is often cited (0.78) produces an
-underestimate of the breaking wave height by 22.7\%. This must be
-because the 0.78 value is derived from a solitary wave with simple
-conditions (no wave steepness and no slope incorporated), therefore
-assuming a linear relationship between breaking wave height and local
-water depth, indicating that the wave will break when its height is
-approximately 0.8 of the depth. However, with a tan\_beta of 0.040
-(slope of 2.3) the wave will steepen due to shoaling because of
-shallower depth with the bottom slope. The Weggel empirical model
-incorporates more nonlinearities, including wave steepness, which
-increases as it enters shallower water with the sloping bathymetry.
-
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
     
+    Sample calculations for x = 50 km:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}71}]:} \PY{n}{x} \PY{o}{=} \PY{l+m+mi}{50000} \PY{c+c1}{\PYZsh{}m aka 50 km}
+         \PY{n}{setup\PYZus{}50\PYZus{}4} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{wind\PYZus{}stress}\PY{o}{/}\PY{p}{(}\PY{n}{rho}\PY{o}{*}\PY{n}{g}\PY{o}{*}\PY{n}{h\PYZus{}4}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+         \PY{n}{setup\PYZus{}50\PYZus{}8} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{n}{wind\PYZus{}stress}\PY{o}{/}\PY{p}{(}\PY{n}{rho}\PY{o}{*}\PY{n}{g}\PY{o}{*}\PY{n}{h\PYZus{}8}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}75}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The final value of wind setup when x = 50 km is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m for a depth of }\PY{l+s+se}{\PYZbs{}}
+         \PY{l+s+s1}{4 m.}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{setup\PYZus{}50\PYZus{}4}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The final value of wind setup when x = 50 km is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m for a depth of }\PY{l+s+se}{\PYZbs{}}
+         \PY{l+s+s1}{8 m.}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{setup\PYZus{}50\PYZus{}8}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The final value of wind setup when x = 50 km is 5.2 m for a depth of 4 m.
+The final value of wind setup when x = 50 km is 2.6 m for a depth of 8 m.
+
+    \end{Verbatim}
 
     \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
+\def\labelenumi{\alph{enumi})}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Discuss your results.
+\end{enumerate}
+
+    Wind set up increases linearly as the distance towards shore increases
+because the wind is blowing over a larger area. The setup is up to 50\%
+higher in a depth of 4 m than a depth of 8 m. Since wind setup is the
+primary driver of surge, this demonstrates why areas with shallow
+sloping continental shelf bathymetry (i.e.~Louisiana) experience large
+surges as opposed to areas with deeper, steeper shelves.
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi})}
 \setcounter{enumi}{1}
 \item
 \end{enumerate}
 
+    \begin{itemize}
+\item
+  Given: The hurricane's central pressure is 940 mb. Assume the
+  far-field barometric pressure is 1013 mb.
+\item
+  Find: Estimate the barometric surge at the center of a hurricane.
+  Discuss your results with respect to those for wind setup in problem
+  1.
+\item
+  Principles:\\
+  )\\
+  )\\
+  )
+\end{itemize}
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}108}]:} \PY{n}{Ks} \PY{o}{=} \PY{l+m+mf}{1.25}
-          
-          \PY{n}{L\PYZus{}0} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
-          \PY{n}{H\PYZus{}0} \PY{o}{=} \PY{n}{Hb\PYZus{}iter}\PY{o}{/}\PY{n}{Ks}
+{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{p\PYZus{}storm} \PY{o}{=} \PY{l+m+mi}{940} \PY{c+c1}{\PYZsh{}mb}
+         \PY{n}{p\PYZus{}far} \PY{o}{=} \PY{l+m+mi}{1013} \PY{c+c1}{\PYZsh{}mb}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}109}]:} \PY{n}{surf\PYZus{}param} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{n}{tan\PYZus{}beta}\PY{o}{/}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{H\PYZus{}0}\PY{o}{/}\PY{n}{L\PYZus{}0}\PY{p}{)}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The surf similarity parameter is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{surf\PYZus{}param}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}58}]:} \PY{n}{surge\PYZus{}barom} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{l+m+mi}{100}\PY{o}{*}\PY{p}{(}\PY{n}{p\PYZus{}far} \PY{o}{\PYZhy{}} \PY{n}{p\PYZus{}storm}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{rho}\PY{o}{*}\PY{n}{g}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)} \PY{c+c1}{\PYZsh{}m}
 \end{Verbatim}
 
 
     \begin{Verbatim}[commandchars=\\\{\}]
-The surf similarity parameter is 0.349
+{\color{incolor}In [{\color{incolor}59}]:} \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The value of barometric surge is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m.}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{surge\PYZus{}barom}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The value of barometric surge is 0.722 m.
 
     \end{Verbatim}
 
-    With a surf similarity parameter of 0.35, this wave is a spilling
-breaker. This type of breaking wave is characterized by a relative low
-wave stpeeness and mild nearshore slope.
-
-    
+    The contribution of barometric surge is much smaller than the
+contribbution of wind surge, with the barometric surge value being 72 -
+86\% smaller than the wind surges at depths of 4 and 8 meters.
 
     \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
+\def\labelenumi{\arabic{enumi})}
 \setcounter{enumi}{2}
 \item
 \end{enumerate}
 
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}110}]:} \PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{g} \PY{o}{*} \PY{n}{h}\PY{p}{)} 
-          \PY{c+c1}{\PYZsh{} m/s}
-          \PY{n}{Q} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{round}\PY{p}{(}\PY{p}{(}\PY{n}{g} \PY{o}{*} \PY{p}{(}\PY{n}{Hb\PYZus{}iter}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{8}\PY{o}{*}\PY{n}{c}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
-          \PY{n}{Q} \PY{c+c1}{\PYZsh{}m\PYZca{}2/s}
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The voume flux at the point of breaking is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m\PYZca{}2/s}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Q}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
+    Hurricane Michael:
 
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-The voume flux at the point of breaking is 6.61 m\^{}2/s
-
-    \end{Verbatim}
-
-    
-
-    Problem 3
-
-    Given: A normally incident (perpendicular) deep-water wave with
-significant Hos = 2.90 m and T = 19.5 s propagates towards shore on a
-bottom slope of \textrm{tan}\betatan β = 0.150. The wave breaks at a
-depth of h = 5.40 m. Assuming the breaker index \kappa=\frac{H_b}{h_b}κ
-= H b h b = 0.78 adequately estimates the breaking wave height
-
-Find: (a) wave setup at the still-water shoreline; (b) Wave runup; (c)
-Compare (a) and (b)
-
-Principles:
-
-    \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
+\begin{itemize}
 \item
-\end{enumerate}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}111}]:} \PY{n}{H\PYZus{}sig} \PY{o}{=} \PY{l+m+mf}{2.90}
-          \PY{n}{T} \PY{o}{=} \PY{l+m+mf}{19.5}
-          \PY{n}{tan\PYZus{}beta} \PY{o}{=} \PY{l+m+mf}{0.150}
-          \PY{n}{h\PYZus{}break} \PY{o}{=} \PY{l+m+mf}{5.40}
-          \PY{n}{K\PYZus{}breaker} \PY{o}{=} \PY{l+m+mf}{0.78}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}112}]:} \PY{n}{x\PYZus{}shoreline} \PY{o}{=} \PY{n}{h\PYZus{}break} \PY{o}{/} \PY{n}{tan\PYZus{}beta}
-          
-          \PY{c+c1}{\PYZsh{} set up = \PYZhy{} (0.12 to 0.15)(\PYZhy{} tan\PYZus{}beta)(x\PYZus{}shoreline)}
-          \PY{n}{s\PYZus{}1} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}} \PY{l+m+mf}{0.12}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{o}{\PYZhy{}} \PY{n}{tan\PYZus{}beta}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{x\PYZus{}shoreline}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
-          \PY{n}{s\PYZus{}2} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{o}{\PYZhy{}} \PY{l+m+mf}{0.15}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{tan\PYZus{}beta}\PY{p}{)} \PY{o}{*} \PY{p}{(}\PY{n}{x\PYZus{}shoreline}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
-          
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The wave setup at the still\PYZhy{}water shoreline }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ is between }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ to }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{0 m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{s\PYZus{}1}\PY{p}{,} \PY{n}{s\PYZus{}2}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-The wave setup at the still-water shoreline 
- is between 0.648 to 0.810 m
-
-    \end{Verbatim}
-
-    \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
-\setcounter{enumi}{1}
+  The minimum central pressure upon landfall during Hurricane Michael
+  was 920 mb, this is the 3rd lowest pressure ever recorded of a
+  US-landfalling hurricane. With this minimum pressure measurement, and
+  assuming that the prevailing atmospheric pressure is regularly 1013
+  mb, the barometric surge produced by Michael is estimated to be 0.92
+  m, pretty significant!
 \item
-\end{enumerate}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}115}]:} \PY{n}{L\PYZus{}0} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}
-          \PY{n}{L\PYZus{}1} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{g}\PY{o}{*}\PY{n}{T}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{p}{)}\PY{o}{*} \PYZbs{}
-          \PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{tanh}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{pi}\PY{p}{)}\PY{o}{/}\PY{n}{T}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{p}{(}\PY{n}{h\PYZus{}break}\PY{o}{/}\PY{n}{g}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{3}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)} 
-          \PY{c+c1}{\PYZsh{} L\PYZus{}1 Approximated with Fenton and McKee}
-          
-          \PY{n}{k\PYZus{}1} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*} \PY{n}{math}\PY{o}{.}\PY{n}{pi}\PY{p}{)} \PY{o}{/} \PY{n}{L\PYZus{}1}
-          
-          \PY{n}{N\PYZus{}0} \PY{o}{=} \PY{l+m+mf}{0.5}
-          \PY{n}{N\PYZus{}1} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{0.5}\PY{p}{)}\PY{o}{*} \PY{p}{(}\PY{l+m+mi}{1} \PY{o}{+} \PY{p}{(}\PY{p}{(}\PY{l+m+mi}{2} \PY{o}{*} \PY{n}{k\PYZus{}1} \PY{o}{*} \PY{n}{h\PYZus{}break}\PY{p}{)} \PY{o}{/} \PYZbs{}
-                             \PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sinh}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k\PYZus{}1}\PY{o}{*}\PY{n}{h\PYZus{}break}\PY{p}{)}\PY{p}{)}\PY{p}{)}\PY{p}{)}
-          
-          \PY{n}{Ks} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{N\PYZus{}0} \PY{o}{*} \PY{n}{L\PYZus{}0}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{N\PYZus{}1} \PY{o}{*} \PY{n}{L\PYZus{}1}\PY{p}{)} \PY{p}{)}
-          \PY{n}{H\PYZus{}1} \PY{o}{=} \PY{n}{K\PYZus{}breaker} \PY{o}{*} \PY{n}{h\PYZus{}break}
-          \PY{n}{H\PYZus{}0} \PY{o}{=} \PY{n}{H\PYZus{}1} \PY{o}{/} \PY{n}{Ks}
-          \PY{c+c1}{\PYZsh{} Shoaling to find H\PYZus{}0}
-          
-          
-          \PY{n}{surf\PYZus{}sim\PYZus{}param} \PY{o}{=} \PY{n}{tan\PYZus{}beta} \PY{o}{/} \PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{H\PYZus{}0}\PY{o}{/}\PY{n}{L\PYZus{}0}\PY{p}{)}\PY{p}{)}
-          \PY{c+c1}{\PYZsh{} deepwater height and length}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}116}]:} \PY{n}{Rs} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{1.38} \PY{o}{*} \PY{n}{surf\PYZus{}sim\PYZus{}param} \PY{o}{*} \PY{n}{H\PYZus{}sig}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
-          
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The wave run up }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{Rs}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-The wave run up 
- is 8.62 m
-
-    \end{Verbatim}
-
-    \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
-\setcounter{enumi}{2}
+  The storm surge was most intense at Mexico Beach, with USGS storm tide
+  pressure sensors measuring water levels about 4.7 m above NAVD88 (this
+  is about 4.5 m above Mean Higher High Water {[}MHHW{]} levels for that
+  area). This measurement was also wave filtered, meaning that waves
+  were not accounted for. Such high water levels plus waves resulted in
+  significant devastation of coastal homes along Mexico Beach.
 \item
-\end{enumerate}
+  After weakening, Michael passed through Norfolk, Virginia. The storm
+  was undergoing extratropical transition, however the maximum sustained
+  winds were still approximately 65 mph or 30 m/s. The storm even
+  produced a surge of 1 m above normal tidal levels at the Lewisetta
+  Station in Virginia (this is 0.65 meters above MHHW) resulting in
+  flooding along coastal Virginia.
+\end{itemize}
 
-    Wave setup is the mean increase in vertical water level due to wave
-breaking. These values are usually pretty low, around 20\% of the
-breaking wave height, but can reach up to approximately 1 m during
-storms. From this problem, the wave setup is 0.648 to 0.810 m. The runup
-is the uprush of water at the shore due to wave breaking and depends on
-wave conditions, bototm slope, and 3d effects. Runup, by definition,
-includes setup so it makes sense that it is significantly larger than
-the setup value. So the vertical uprush of water, including setup (0.65
-- 0.81 m) in total is 8.62 m.
+    References:
 
-    
-
-    Problem 4
-
-    Given: Tide data at station 8635750
-
-Find: (a) tidal form (b) storm water level at mean sea level and mean
-lower low water
-
-Principles:
-
-    \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
-\item
-\end{enumerate}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}117}]:} \PY{n}{a\PYZus{}k1} \PY{o}{=} \PY{l+m+mf}{0.023}
-          \PY{n}{a\PYZus{}o1} \PY{o}{=} \PY{l+m+mf}{0.019}
-          \PY{n}{a\PYZus{}m2} \PY{o}{=} \PY{l+m+mf}{0.184}
-          \PY{n}{a\PYZus{}s2} \PY{o}{=} \PY{l+m+mf}{0.028}
-          
-          \PY{n}{R} \PY{o}{=} \PY{n+nb}{round}\PY{p}{(}\PY{p}{(}\PY{n}{a\PYZus{}k1} \PY{o}{+} \PY{n}{a\PYZus{}o1}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{n}{a\PYZus{}m2} \PY{o}{+} \PY{n}{a\PYZus{}s2}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
-          
-          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The tidal form number is }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s1}{ m }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ this means the tide type is semidiurnal }\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s1}{ since it is less than 0.25.}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{R}\PY{p}{)}\PY{p}{)}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-The tidal form number is 0.198 m 
- this means the tide type is semidiurnal 
- since it is less than 0.25.
-
-    \end{Verbatim}
-
-    \begin{enumerate}
-\def\labelenumi{(\alph{enumi})}
-\setcounter{enumi}{1}
-\item
-\end{enumerate}
+Beven, J. L., Berg, R., \& Hagen, A. (2019). Hurricane Michael
+(AL142018). National Hurricane Center Tropical Cyclone Report.
 
 
     % Add a bibliography block to the postdoc
